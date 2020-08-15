@@ -1,0 +1,76 @@
+<head>
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+
+
+<body>
+  <div class="px-4 py-4">
+    <h3 class="text-lg text-gray-900 mb-3 font-semibold">Spacer visbility</h3>
+    <p class="my-3 text-sm text-gray-600">Use this button to show and hide spacers on your current page.</p>
+    <button id="visibility" class="bg-teal-600 hover:bg-teal-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Toggle</button>
+  </div>
+
+
+  <div class="px-4 pt-6 pb-4">
+    <h3 class="text-lg text-gray-900 mb-3 font-semibold">Create vertical spacers</h3>
+
+    <!--Input: width-->
+    <div class="mb-6">
+      <label class="text-sm block text-gray-700 text-sm font-bold mb-2">Width (px)</label>
+      <input type="text" id="width" placeholder="400" value="400" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    </div>
+
+
+    <!--Input: height-->
+    <div class="mb-6">
+      <label class="text-sm block text-gray-700 text-sm font-bold mb-2">Height (px)</label>
+      <input type="text" id="height" placeholder="16, 32, 64" value="16, 24, 32, 64" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+      <p class="mt-3 text-sm text-gray-600">Note: Use comma to create multiple spacers with various height.</p>
+    </div>
+
+
+    <!--Input: button-->
+    <button id="create" class="bg-teal-600 hover:bg-teal-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Create</button>
+    <button id="cancel" class="ml-4 inline-block align-baseline font-bold text-sm text-gray-600 hover:text-blue-800">Cancel</button>
+  </div>
+</body>
+
+<script>
+
+// feauter: toggle visibility
+document.getElementById('visibility').onclick = () => {
+  console.log("hit visibility button");
+  parent.postMessage({ pluginMessage: { type: 'toggle-visibility'} }, '*')
+}
+
+
+// feauter: create vertical spacers
+document.getElementById('create').onclick = () => {
+  // Width
+  const textbox_width = document.getElementById('width');
+  const width = parseInt(textbox_width.value, 10);
+
+  // Height
+  const textbox_height = document.getElementById('height');
+  const height = parseInt(textbox_height.value, 10);
+
+  var height_list = textbox_height.value.split(',');
+  console.log(height_list);
+  
+  parent.postMessage({ pluginMessage: { type: 'create-spacers', width, height_list} }, '*')
+}
+
+
+// function countHeight(textbox_height) {
+//   var height_list = textbox_height.split(',');
+  
+//   console.log(height_list);
+//   return height_list;
+// }
+
+document.getElementById('cancel').onclick = () => {
+  parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
+}
+
+</script>
